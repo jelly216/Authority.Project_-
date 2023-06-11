@@ -1,0 +1,92 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "登录";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>朝夕教育权限系统实战</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="~/Scripts/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/global/css/components-rounded.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="~/Scripts/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/pages/css/login-4.min.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body class="login">
+    <div class="login">
+        <div class="logo">
+            <img src="~/Content/logo朝夕教育.png" style="width:300px;height:70px" />
+        </div>
+        <div class="content">
+            @using Authority.Common.User;
+            @model LoginUser
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h3 class="form-title">登录账户</h3>
+                <div class="alert alert-danger display-hide">
+                    <button class="close" data-close="alert"></button>
+                    <span> @ViewBag.Message </span>
+                    @Html.ValidationSummary(true)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Name, new { @class = "control-label visible-ie8 visible-ie9" })
+                    <div class="input-icon">
+                        <i class="fa fa-user"></i>
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control placeholder-no-fix", @type = "text", @autocomplete = "off", @placeholder = "请输入用户名" })
+                        @Html.ValidationMessage("Name", new { @style = "color: red" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "control-label visible-ie8 visible-ie" })
+                    <div class="input-icon">
+                        <i class="fa fa-lock"></i>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control placeholder-no-fix", @autocomplete = "off", @placeholder = "请输入密码" })
+                        @Html.ValidationMessage("Password", new { @style = "color: red" })
+                        @Html.ValidationMessage("failed", new { @style = "color: red" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CheckCode, new { @class = "control-label visible-ie8 visible-ie" })
+                    <div class="input-icon">
+                        <i class="fa fa-lock"></i>
+                        @Html.PasswordFor(m => m.CheckCode, new { @class = "form-control placeholder-no-fix", @autocomplete = "off", @placeholder = "请输入验证码" })
+                        @Html.ValidationMessage("CheckCode", new { @style = "color: red" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <img style="border-radius: 7px; height: 40px;" alt="验证码图片" class="img" onclick="refresh(this)" src="/Account/VerifyCode" title="点击刷新">
+                </div>
+                <div class="form-actions">
+                    <label class="checkbox">
+                        @Html.CheckBoxFor(c => c.Remember)
+                        <span>记住我</span>
+                    </label>
+                    <button type="submit" class="btn green pull-right"> Login </button>
+                </div>
+                <div class="create-account">
+                    <p>
+                        还没有账号吗 ?&nbsp;
+                        <a href="/Account/Register"> 创建一个账号 </a>
+                    </p>
+                </div>
+            }
+        </div>
+        <div class="copyright"> 2021 &copy; zhaoxi.edu</div>
+    </div>
+    <script src="~/Scripts/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function refresh(obj) {
+            $(obj).attr("src", "/Account/VerifyCode?random=" + Math.random());
+        }
+    </script>
+</body>
+
+</html>
